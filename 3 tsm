@@ -1,0 +1,82 @@
+from sys import maxsize
+from itertools import permutations
+
+# Number of vertices in the graph
+V = 4
+
+def travellingSalesmanProblem(graph, s):
+    # Store all vertices except the source vertex
+    vertex = []
+    for i in range(V):
+        if i != s:
+            vertex.append(i)
+    
+    # Initialize the minimum path cost to a large value
+    min_path = maxsize
+    
+    # Generate all permutations of vertices
+    next_permutation = permutations(vertex)
+    
+    # Check each permutation
+    for i in next_permutation:
+        current_pathweight = 0
+        
+        # Starting vertex
+        k = s
+        
+        # Calculate the path weight for the current permutation
+        for j in i:
+            current_pathweight += graph[k][j]
+            k = j
+        current_pathweight += graph[k][s]
+        
+        # Update the minimum path cost
+        min_path = min(min_path, current_pathweight)
+    
+    return min_path
+
+# Main function to test the algorithm
+if __name__ == "__main__":
+    # Define the graph as a 2D list
+    graph = [[0, 10, 15, 20], 
+             [10, 0, 35, 25],
+             [15, 35, 0, 30], 
+             [20, 25, 30, 0]]
+    
+    # Define the source vertex
+    s = 0
+    
+    # Print the result
+    print(travellingSalesmanProblem(graph, s))
+
+80
+
+
+ colors = ['red', 'blue', 'green', 'yellow', 'black']
+ states = ['andhra', 'karnataka', 'tamilnadu', 'kerala']
+ neighbors = {
+    'andhra': ['karnataka', 'tamilnadu'],
+    'karnataka': ['andhra', 'tamilnadu', 'kerala'],
+    'tamilnadu': ['andhra', 'karnataka', 'kerala'],
+    'kerala': ['karnataka', 'tamilnadu']
+ }
+ colors_of_states = {}
+ def promising(state, color):
+    for neighbor in neighbors.get(state):
+        color_of_neighbor = colors_of_states.get(neighbor)
+        if color_of_neighbor == color:
+            return False
+    return True
+ def get_color_for_state(state):
+    for color in colors:
+        if promising(state, color):
+            return color
+ [ ]
+ def main():
+    for state in states:
+        colors_of_states[state] = get_color_for_state(state)
+    print(colors_of_states)
+ main()
+
+
+  {'andhra': 'red', 'karnataka': 'blue', 'tamilnadu': 'green', 'kerala': 'red'}
