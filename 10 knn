@@ -1,0 +1,53 @@
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+# Load the Iris dataset
+iris = load_iris()
+
+# Display dataset keys
+print("Dataset keys:", iris.keys())
+
+# Convert dataset to a DataFrame
+df = pd.DataFrame(iris['data'], columns=iris['feature_names'])
+print("Feature Data\n", df.head())
+print("Target names:", iris['target_names'])
+print("Feature names:", iris['feature_names'])
+print("Target array:\n", iris['target'])
+
+# Separate features (X) and target (y)
+X = df
+y = iris['target']
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+
+# Initialize the K-Nearest Neighbors classifier
+knn = KNeighborsClassifier(n_neighbors=3)
+
+# Train the classifier on the training data
+knn.fit(X_train, y_train)
+
+# Length of the test set
+print("Length of test set:", len(X_test))
+
+# Predict the test set
+y_pred = knn.predict(X_test)
+
+# Confusion matrix and accuracy for the test data
+cm_test = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix (Test Data):\n", cm_test)
+accuracy_test = accuracy_score(y_test, y_pred)
+print("Accuracy on test data:", accuracy_test)
+
+# Length of the training set
+print("Length of training set:", len(X_train))
+
+# Predict the training set
+y_train_pred = knn.predict(X_train)
+
+# Confusion matrix for the training data
+cm_train = confusion_matrix(y_train, y_train_pred)
+print("Confusion Matrix (Training Data):\n", cm_train)
